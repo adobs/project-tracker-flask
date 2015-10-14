@@ -32,17 +32,17 @@ def get_student_by_github(github_name):
 
     return row
 
-def get_student_info_and_project_info(github_name):
+def get_student_info_and_project_info(github):
     """Given a github account name, return information of the first name, last name, 
     github, and list of all the projects completed and grade for that project."""
 
     QUERY = """
         SELECT first_name, last_name, github, project_title, grade FROM Students 
-        as s Join Grades AS g ON github = student_github)
+        as s Join Grades AS g ON github = student_github
         WHERE github = :github
     """   
 
-    db_cursor = db.session.execute(QUERY, {'github': github_name})
+    db_cursor = db.session.execute(QUERY, {'github': github})
     row = db_cursor.fetchall()
 
     return row
@@ -83,6 +83,16 @@ def get_grade_by_github_title(github, title):
 
     return db_cursor
 
+def get_students_by_project(title):
+    """Returns all students who've completed specified projects and their respective grades."""
+    QUERY = """
+        SELECT first_name, last_name, grade FROM Students
+        JOIN Grades ON github = student_github
+        WHERE project_title = :title
+    """
+    db_cursor = db.session.execute(QUERY, {'title': title}).fetchall()
+
+    return db_cursor
 
 def assign_grade(github, title, grade):
     """Assign a student a grade on an assignment and print a confirmation."""
@@ -92,6 +102,23 @@ def assign_grade(github, title, grade):
     db.session.commit()
 
     print "you have successfully added the grade {} to {}'s github for {} project".format(grade, github, title)
+
+def get_all_students():
+    """Return all students"""
+
+    QUERY = """
+    SELECT first_name, last_name from Students
+    """
+    return db.session.execute(QUERY)
+
+def get_all_projects():
+
+
+    QUERY = """
+    SELECT title FROM Projects"""
+
+    return db.session.execute(QUERY)
+
 
 def handle_input():
     """Main loop.
@@ -123,6 +150,9 @@ def handle_input():
 
         elif command == "assign":
             assign_grade(args[0], args[1], args[2])
+
+        elif command == "get_student_and_project_info":
+            get_student_info_and_project_info(args[0])
 
         else:
             if command != "quit":

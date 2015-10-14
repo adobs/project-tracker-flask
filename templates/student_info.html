@@ -4,15 +4,14 @@
     <title>Student Info</title>
 </head>
 <body>
-<h1>{% for line in aggregate_list%}
-        {{ first, last, github, project, grade = line }}
+<h1>{{ aggregate_list[0][0]}} {{ aggregate_list[0][1]}} ({{ aggregate_list[0][2]}})     
     </h1>
+{% for line in aggregate_list%}
     <ul>
-        <li>First Name: {{ first }}</li>
-        <li>Last Name: {{ last }}</li>
-        <li>GitHub Account: {{ github }}</li>
-        <li>Project: {{ project }}</li>
-        <li>Grade: {{ grade }}</li>
+        <li><a href="/project/{{ line[3] }}" >Project: {{ line[3] }}</a></li>
+        <li>Grade: {{ line[4] }}</li>
+
+  
     </ul>
     {% endfor %}
 </body>
