@@ -1,0 +1,19 @@
+<!doctype html>
+<html>
+<head>
+    <title>Student Info</title>
+</head>
+<body>
+<h1>{% for line in aggregate_list%}
+        {{ first, last, github, project, grade = line }}
+    </h1>
+    <ul>
+        <li>First Name: {{ first }}</li>
+        <li>Last Name: {{ last }}</li>
+        <li>GitHub Account: {{ github }}</li>
+        <li>Project: {{ project }}</li>
+        <li>Grade: {{ grade }}</li>
+    </ul>
+    {% endfor %}
+</body>
+</html>
